@@ -25,4 +25,23 @@ describe('The server', () => {
             expect(response.statusCode).toEqual(401);
         });
     });
+
+    describe('when an authenticated request is issued', () => {
+        let response;
+        const basicAuthHeader = 'Basic ' + new Buffer('user:pass').toString('base64');
+
+        beforeAll(async () => {
+            response = await server.inject({
+                url: '/',
+                method: 'GET',
+                headers: {
+                    authorization: basicAuthHeader
+                }
+            });
+        });
+
+        it('throws a 200 status code', () => {
+            expect(response.statusCode).toEqual(200);
+        });
+    });
 });
